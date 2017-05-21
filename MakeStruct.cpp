@@ -46,9 +46,14 @@ public:
 				Mas[ind]->branch = line[1];
 			}
 			if (line[0] == "name")
-				Mas[ind]->author = line[1];
+				if (!Mas[ind]->author.empty())
+					throw std::exception("Wrong format");
+				else 
+					Mas[ind]->author = line[1];
 			if (line[0] == "time")
 			{
+				if (!Mas[ind]->time.empty())
+					throw std::exception("Wrong format");
 				time_t t = stoul(line[1]);
 				struct tm buf;
 				char str[26];
@@ -58,6 +63,8 @@ public:
 			}
 			if (line[0] == "files")
 			{
+				if (Mas[ind]->root != nullptr)
+					throw std::exception("Wrong format");
 				Mas[ind]->root = new Dir;
 				Mas[ind]->root->files.push_back(line[1]);
 				getline(file, str);
@@ -73,7 +80,10 @@ public:
 				} 
 			}
 			if (line[0] == "hash")
-				Mas[ind]->hash = line[1];
+			if (!Mas[ind]->hash.empty())
+					throw std::exception("Wrong format");
+				else
+					Mas[ind]->hash = line[1];
 		}
 	}
 
