@@ -48,7 +48,14 @@ public:
 			if (line[0] == "name")
 				Mas[ind]->author = line[1];
 			if (line[0] == "time")
-				Mas[ind]->time = line[1];
+			{
+				time_t t = stoul(line[1]);
+				struct tm buf;
+				char str[26];
+				gmtime_s(&buf, &t);
+				asctime_s(str, sizeof str, &buf);
+				Mas[ind]->time = str;
+			}
 			if (line[0] == "files")
 			{
 				Mas[ind]->root = new Dir;
